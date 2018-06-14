@@ -3,171 +3,81 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const fs = require('fs');
-const readline = require('readline');
 const {google} = require('googleapis');
-const OAuth2 = google.auth.OAuth2;
+const discoveryDoc = 'discoverydoc.json';
+const key = require('./credentials.json');
 
-// If modifying these scopes, delete your previously saved credentials
-const SCOPES = ['https://www.googleapis.com/auth/jobs'];
-const TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
-    process.env.USERPROFILE) + '/.credentials/';
-const TOKEN_PATH = TOKEN_DIR + 'googleJobSearch.json';
+const googleSearch = require("./scripts/googleJobSearch");
 
-const googleSearch = require("./searchScripts/googleJobSearch");
-
-var CLIENT_CREDENTIALS;
 //NOTE: Remove unused modules when project is complete
 //NOTE: End of import code here ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+const jwtClient = new google.auth.JWT(key.client_email, null, key.private_key, ["https://www.googleapis.com/auth/jobs"], null);
 
-// Load client secrets from a local file.
-fs.readFile('client_secret.json', function processClientSecrets(err, content) {
-  if (err) {
-    console.log('Error loading client secret file: ' + err);
-    return;
-  }
-  console.log("HELLO WORLD");
-  // Authorize a client with the loaded credentials, then call the API.
-  CLIENT_CREDENTIALS = JSON.parse(content);
-  // authorize(JSON.parse(content), getChannel);
-  //current note: Probably make the request in this file(?), and then try to modularize if possible
-  //pass the search results to another file? idk
-});
+var jobServicePromise = google.discoverAPI(discoveryDoc);
+jobServicePromise.then(function(jobService){
 
-app.get('/api/hello', (req, res) => {
-  googleSearch.googleJobSearch();
-  res.send({ express: 'To do: Put server side code here (like API calls) and return the information in JSON form' });
-});
+    jwtClient.authorize(function(err, tokens) {
+        if (err) {
+            console.log(err);
+            return;
+        }
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+        //hashing for privacy? maybe later, when i actually have this working.
+        var rmdObject = {
+          "domain": "UNKNOWN",
+          "sessionId": "UNKNOWN",
+          "userId": "UNKNOWN",
+        }
 
+        //https://cloud.google.com/job-discovery/docs/reference/rest/v2beta1/jobs/search
+        var searchJobsRequest = {
+            "requestMetadata": rmdObject,
+            // "filters": {
+            //     "query": "software engineer"
+            // },
+            "query": {
+              "query": "Analyst",
+              "employmentTypes": [
+                "FULL_TIME",
+                "INTERN"
+              ],
+              "locationFilters": [{
+                "name": "Dallas, TX",
+                "distanceInMiles": 20,
+              }]
+            },
+            "mode": "JOB_SEARCH",
+            // disableKeywordMatch: true,
+            enableBroadening: true,
 
+            // "offset": 5,
+            // "pageSize": 5
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//GOOGLE CLIENT AUTH METHODS
-
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- *
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
-function authorize(credentials, callback) {
-  var clientSecret = credentials.installed.client_secret;
-  var clientId = credentials.installed.client_id;
-  var redirectUrl = credentials.installed.redirect_uris[0];
-  var oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
-
-  // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, function(err, token) {
-    if (err) {
-      getNewToken(oauth2Client, callback);
-    } else {
-      oauth2Client.credentials = JSON.parse(token);
-      callback(oauth2Client);
-    }
-  });
-}
-
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- *
- * @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback to call with the authorized
- *     client.
- */
-function getNewToken(oauth2Client, callback) {
-  var authUrl = oauth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: SCOPES
-  });
-  console.log('Authorize this app by visiting this url: ', authUrl);
-  var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  rl.question('Enter the code from that page here: ', function(code) {
-    rl.close();
-    oauth2Client.getToken(code, function(err, token) {
-      if (err) {
-        console.log('Error while trying to retrieve access token', err);
-        return;
-      }
-      oauth2Client.credentials = token;
-      storeToken(token);
-      callback(oauth2Client);
+        jobService.jobs.search({ auth: jwtClient, resource: searchJobsRequest }, function (err, result) {
+          if (err) {
+            console.error('Failed to search jobs! ' + err);
+            throw err;
+          }
+          console.log("############# POST sample #############");
+          console.log('result:', result);
+        });
     });
-  });
-}
 
-/**
- * Store token to disk be used in later program executions.
- *
- * @param {Object} token The token to store to disk.
- */
-function storeToken(token) {
-  try {
-    fs.mkdirSync(TOKEN_DIR);
-  } catch (err) {
-    if (err.code != 'EEXIST') {
-      throw err;
-    }
-  }
-  fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-    if (err) throw err;
-    console.log('Token stored to ' + TOKEN_PATH);
-  });
-  console.log('Token stored to ' + TOKEN_PATH);
-}
-
-// /**
-//  * Lists the names and IDs of up to 10 files.
-//  *
-//  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
-//  */
-// function getChannel(auth) {
-//   var service = google.youtube('v3');
-//   service.channels.list({
-//     auth: auth,
-//     part: 'snippet,contentDetails,statistics',
-//     forUsername: 'GoogleDevelopers'
-//   }, function(err, response) {
-//     if (err) {
-//       console.log('The API returned an error: ' + err);
-//       return;
-//     }
-//     var channels = response.data.items;
-//     if (channels.length == 0) {
-//       console.log('No channel found.');
-//     } else {
-//       console.log('This channel\'s ID is %s. Its title is \'%s\', and ' +
-//                   'it has %s views.',
-//                   channels[0].id,
-//                   channels[0].snippet.title,
-//                   channels[0].statistics.viewCount);
-//     }
-//   });
-// }
+    // jwtClient.authorize(function(err, tokens) {
+    //     if (err) {
+    //         console.log(err);
+    //         return;
+    //     }
+    //
+    //     jobService.companies.list({ auth: jwtClient }, function (err, result) {
+    //         if (err) {
+    //             console.error('Failed to retrieve companies! ' + err);
+    //             throw err;
+    //         }
+    //         console.log("############# GET sample #############");
+    //         console.log('Companies:', result.data);
+    //     });
+    // });
+});

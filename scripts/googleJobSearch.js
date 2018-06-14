@@ -5,8 +5,7 @@
 //https://cloud.google.com/job-discovery/docs/search
 
 
-function getJobs() {
-  console.log("hello world");
+function getJobs(auth) {
 }
 
 module.exports = {
