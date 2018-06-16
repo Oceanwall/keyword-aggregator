@@ -60,6 +60,8 @@ class SearchForm extends Component {
           </select>
         </div>
 
+        {/* TODO: How many results do you want us to parse through (a lot, a few, some) */}
+
         <input type="submit" value="Submit!"></input>
       </form>
     );

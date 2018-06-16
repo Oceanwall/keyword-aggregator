@@ -26,8 +26,9 @@ class App extends Component {
       method: "POST",
     })
     .then((response) => {
+      //TODO: return response.json()? Promise chaining is cleaner?
       response.json().then((data) => {
-        console.log(data);
+        // console.log(data);
       });
     })
     .catch((error) => {

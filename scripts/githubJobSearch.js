@@ -4,6 +4,7 @@ const GITHUB_BASE_URL = "https://jobs.github.com/positions.json?";
 function getJobs(searchCriteria) {
   //TODO: Add pages to URL search, make multiple requests before resolving?
   return new Promise(function(resolve, reject) {
+    //to add page #; append onto end &page = #
     let targetURL = GITHUB_BASE_URL;
     let objectPairings = Object.entries(searchCriteria);
 
