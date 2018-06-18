@@ -9,7 +9,7 @@ function getJobs(searchCriteria) {
     let objectPairings = Object.entries(searchCriteria);
 
     for (let i = 0; i < objectPairings.length; i++) {
-      targetURL = `${targetURL}${objectPairings[i][0]}=${objectPairings[i][1]}&`;
+      targetURL = `${targetURL}${objectPairings[i][0]}=${objectPairings[i][1]}&page=2`;
     }
     console.log(targetURL);
 
@@ -23,7 +23,7 @@ function getJobs(searchCriteria) {
 
     rp(options)
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       resolve(response);
     })
     .catch((error) => {
