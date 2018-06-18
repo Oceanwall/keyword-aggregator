@@ -10,7 +10,6 @@ const key = require('./credentials.json');
 
 const googleSearch = require("./scripts/googleJobSearch");
 const githubSearch = require("./scripts/githubJobSearch");
-const wordAnalysis = require("./scripts/wordAnalysis");
 
 //NOTE: Remove unused modules when project is complete
 //NOTE: End of import code here ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,10 +25,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 app.post('/searchForJobs', (req, res) => {
   githubSearch.githubJobSearch(req.body)
   .then((result) => {
-    return wordAnalysis.analyzeWords(result);
-  })
-  .then((wordAnalysis) => {
-    res.send({result: wordAnalysis});
+    res.send({result: result});
   })
   .catch((error) => {
     console.log("An error occurred when trying to display search information");
