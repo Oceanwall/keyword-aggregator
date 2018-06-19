@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import './SearchForm.css';
 
 //TODO: Form Validation? with colors and shit, maybe prevent default browser icon from appearing?
+//TODO: Validate text, ensure that script tags can't be executed
+//TODO: Include option to include/exclude IEEE (More hardware based jobs)
 //TODO: Autocomplete, spelling checker? maybe integrate google cloud job search API or some other spell checker this way?
 //TODO: wipe out fields on submit, or blur? or do something so that they can't mess with it.
+
+//URGENT TODO: FOR EACH WORD IN THE DESCRIPTION, ADD A + SIGN BETWEEN THEM
+//URGENT TODO: DO NOT ALLOW SPACES IN LOCATION
 
 class SearchForm extends Component {
 
