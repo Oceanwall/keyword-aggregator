@@ -3,6 +3,7 @@ const parseString = require('xml2js').parseString;
 
 const IEEE_BASE_URL = "https://jobs.ieee.org/jobs/results/keyword/";
 const IEEE_RSS_URL = "?view=List&format=rss";
+const cheerio = require('cheerio');
 
 function getJobs(searchCriteria) {
   //TODO: Add pages to URL search, make multiple requests before resolving?
@@ -33,16 +34,27 @@ function getJobs(searchCriteria) {
         let index = 0;
 
         for (let item of result.rss.channel[0].item) {
-          //TODO: description does not provide enough :///, go grab actual page? make async?
-          // let offerObject = {description: item.description[0], title: item.title[0], link: item.link[0]};
-          // offers[index] = offerObject;
-          console.log(item);
-          console.log("NEW ITEM");
+          let jobOfferOptions = {uri: item.link[0], json: true};
+          let jobDescription = "";
+
+          offers[index] = rp(jobOfferOptions).then((jobOfferPage) => {
+            let $ = cheerio.load(jobOfferPage);
+
+            $("*[itemprop = 'description']").each((index, elem) => {
+              // console.log($(elem).html());
+              jobDescription += ($(elem).html() + " ");
+            });
+
+            let offerObject = {description: jobDescription, title: item.title[0], link: item.link[0]};
+            return offerObject;
+          });
           index++;
         }
 
-        resolve(offers);
-        // console.log(result.rss.channel[0].item);
+        //NOTE: Slow server side waiting? is this correct?
+        Promise.all(offers).then((completedOfferInquiries) => {
+          resolve(completedOfferInquiries);
+        });
       });
     })
     .catch((error) => {
