@@ -41,7 +41,6 @@ function getJobs(searchCriteria) {
             let $ = cheerio.load(jobOfferPage);
 
             $("*[itemprop = 'description']").each((index, elem) => {
-              // console.log($(elem).html());
               jobDescription += ($(elem).html() + " ");
             });
 

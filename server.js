@@ -25,13 +25,35 @@ app.use(bodyParser.json());
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.post('/searchForJobs', (req, res) => {
-  // githubSearch.githubJobSearch(req.body)
-  ieeeSearch.ieeeJobSearch(req.body).then((result) => {
-    // res.send({result: result});
-    console.log(result);
+  let jobSearchResults = [];
+  // jobSearchResults[0] = ieeeSearch.ieeeJobSearch(req.body).then((result) => {
+  //   console.log("DONE 0");
+  //   return result;
+  // }).catch((error) => {
+  //   console.log("An error occurred when trying to display ieee search information");
+  //   console.error(error);
+  // });
+  //
+  // jobSearchResults[1] = stackoverflowSearch.stackoverflowJobSearch(req.body).then((result) => {
+  //   console.log("DONE 1");
+  //   return result;
+  // }).catch((error) => {
+  //   console.log("An error occurred when trying to display stack overflow search information");
+  //   console.error(error);
+  // });
+
+  //TODO: CHANGE THIS BACK TO 2 WHEN DONE WITH TESTING PURPOSES
+  jobSearchResults[0] = githubSearch.githubJobSearch(req.body).then((result) => {
+    console.log("DONE 2");
+    return result;
   }).catch((error) => {
-    console.log("An error occurred when trying to display search information");
+    console.log("An error occurred when trying to display github search information");
     console.error(error);
+  });
+
+  Promise.all(jobSearchResults).then((completedSearches) => {
+    console.log("DONE 333");
+    res.send({result: completedSearches});
   });
 });
 

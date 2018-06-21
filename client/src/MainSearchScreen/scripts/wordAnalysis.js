@@ -18,55 +18,55 @@ const specialWords = [" c++ "];
 
 function analyzeWords(offers) {
   //TODO: Definitely do this on the client side? Can also let user know that data was received, etc
-
-  //Get one string containing all of the offers
-  let totalOfferString = "";
-  for (let offer of offers.result) {
-    totalOfferString += offer.description;
-  }
-  let cleanOfferString = striptags(totalOfferString).toLowerCase().replace(/[&\/\\,\(\)$~%\.\-!^'"\;:*?\[\]<>{}]/g, ' ');
-
-  //Remove common words
-  for (let commonWord of wordsToInitallyRemove) {
-    cleanOfferString.replace(new RegExp(commonWord, 'g'), "");
-  }
-
-  //Set up array of pairings, index
-  let wordFreqPairings = [];
-  let index = 0;
-
-  //Go through each of the (normal regex-able) tech terms
-  for (let word of techTerms) {
-    let wordLength = word.length;
-    let oldLength = cleanOfferString.length;
-    cleanOfferString = cleanOfferString.replace(new RegExp(word, 'g'), "");
-    let wordsRemoved = (oldLength - cleanOfferString.length) / wordLength;
-    wordFreqPairings[index] = [word, wordsRemoved];
-    index++;
-  }
-
-  //Go through the special terms that refuse regex
-  for (let word of specialWords) {
-    let wordIndex = cleanOfferString.indexOf(word);
-    let numWords = 0;
-    while (wordIndex !== -1) {
-      numWords++;
-      wordIndex = cleanOfferString.indexOf(word, wordIndex + word.length);
+  for (let offerChoice of offers.result) {
+    //Get one string containing all of the offers
+    let totalOfferString = "";
+    for (let offer of offerChoice) {
+      totalOfferString += offer.description;
     }
-    //TODO: remove spaces from word before placing it into array
-    wordFreqPairings[index] = [word, numWords];
-    index++;
+    let cleanOfferString = striptags(totalOfferString).toLowerCase().replace(/[&\/\\,\(\)$~%\.\-!^'"\;:*?\[\]<>{}]/g, ' ');
+
+    //Remove common words
+    for (let commonWord of wordsToInitallyRemove) {
+      cleanOfferString.replace(new RegExp(commonWord, 'g'), "");
+    }
+
+    //Set up array of pairings, index
+    let wordFreqPairings = [];
+    let index = 0;
+
+    //Go through each of the (normal regex-able) tech terms
+    for (let word of techTerms) {
+      let wordLength = word.length;
+      let oldLength = cleanOfferString.length;
+      cleanOfferString = cleanOfferString.replace(new RegExp(word, 'g'), "");
+      let wordsRemoved = (oldLength - cleanOfferString.length) / wordLength;
+      wordFreqPairings[index] = [word, wordsRemoved];
+      index++;
+    }
+
+    //Go through the special terms that refuse regex
+    for (let word of specialWords) {
+      let wordIndex = cleanOfferString.indexOf(word);
+      let numWords = 0;
+      while (wordIndex !== -1) {
+        numWords++;
+        wordIndex = cleanOfferString.indexOf(word, wordIndex + word.length);
+      }
+      //TODO: remove spaces from word before placing it into array
+      wordFreqPairings[index] = [word, numWords];
+      index++;
+    }
+
+    wordFreqPairings.sort(function(a, b) {
+      return b[1] - a[1];
+    });
+
+    return {
+      sortedPairings: wordFreqPairings,
+      leftoverString: cleanOfferString,
+    };
   }
-
-  wordFreqPairings.sort(function(a, b) {
-    return b[1] - a[1];
-  });
-
-  return {
-    sortedPairings: wordFreqPairings,
-    leftoverString: cleanOfferString,
-  };
-
 }
 
 

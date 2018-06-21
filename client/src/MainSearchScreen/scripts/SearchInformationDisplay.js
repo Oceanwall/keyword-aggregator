@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './SearchInformationDisplay.css';
+import '../styles/SearchInformationDisplay.css';
 const wordAnalysis = require("./wordAnalysis");
 
 //TODO: Separate this component out into more child components?
