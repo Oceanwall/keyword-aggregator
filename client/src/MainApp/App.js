@@ -68,9 +68,10 @@ class App extends Component {
   }
 
   //TODO: Sliding animation in/out?
-  //TODO: cache information?
+  //TODO: cache information? avoid wait for requests? but get loading thing working first xd
 
   //TODO: create title, header, make form look better
+    //form info in small info hover bubbles? information sidebar or info after title?
   //TODO: Display information (with charts? graphs? idk)
   //TODO: Offer user ability to look at leftover info (?), show ads?
 
@@ -97,7 +98,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="application-body">
         <div>
           <MainPageHeader />
           <SearchForm

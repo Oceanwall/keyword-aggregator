@@ -49,55 +49,66 @@ class SearchForm extends Component {
   }
 
   //TODO: WIRE THESE BOYS BELOW UP
+  //TODO: Expand for more info?
+  //TODO: Compress options when checking, uncompress if canceled? or dont allow cancel, could be dangerous
+  //TODO: color scheme?
+  //TODO: initially have "job name" in middle, then move up if "optional items" is clicked. also have it initially be larger
 
   render() {
     return (
       <form onSubmit = {this.handleSubmit}>
         <div>
-          <label>Job title</label>
+          <label className="entry-label">Job title</label>
           {/* TODO: Add input pre-text? */}
-          <input type="text" value={this.state.description} onChange={this.handleChange} name="description" required></input>
+          <input type="text" value={this.state.description} onChange={this.handleChange} name="description" required className="entry-job"></input>
         </div>
 
-        <div>
-          <label>Job location (optional)</label>
-          <input type="text" value={this.state.location} onChange={this.handleChange} name="location"></input>
-        </div>
+        <section>
+          {/* TODO: Change value (hide, ▲ show optional fields (make animation?)) */}
+          <h3>▼ Show optional fields.</h3>
 
-        <div>
-          <label>Only full time jobs? (optional)</label>
-          <select value={this.state.fulltime} onChange={this.handleChange} name="fulltime">
-            <option value={false}>Doesn't matter</option>
-            <option value={true}>40 hours a week, yessir!</option>
-          </select>
-        </div>
+          <div className="entry">
+            <label className="entry-label">Job location</label>
+            <input type="text" value={this.state.location} onChange={this.handleChange} name="location"></input>
+          </div>
 
-        <div>
-          <label>Include jobs from IEEE? (optional)</label>
-          <label>Note: IEEE jobs are much more biased towards hardware jobs. Selecting this option will introduce jobs that combine both software and significant amounts of hardware expertise.</label>
-          <select value={this.state.includeIEEE} onChange={this.handleChange} name="includeIEEE">
-            <option value={false}>Leave them out</option>
-            <option value={true}>I love hardware!</option>
-          </select>
-        </div>
+          <div className="entry">
+            <label className="entry-label">Only full time jobs?</label>
+            <select value={this.state.fulltime} onChange={this.handleChange} name="fulltime">
+              <option value={false}>Doesn't matter</option>
+              <option value={true}>40 hours a week, yessir!</option>
+            </select>
+          </div>
 
-        <div>
-          <label>How many results should we parse through? (optional)</label>
-          <label>Note: Parsing through more results will take a longer time, but should provide more sensible statistical results. The Law of Large Numbers, right?</label>
-          <select value={this.state.searchScope} onChange={this.handleChange} name="scope">
-            <option value={"small"}>A few hundred...</option>
-            <option value={"medium"}>Try for a thousand!</option>
-            <option value={"large"}>Give me all you got!</option>
-          </select>
-        </div>
+          <div className="entry">
+            <label className="entry-label">Include jobs from IEEE?</label>
+            <label className="entry-additional-info">Note: IEEE jobs are much more biased towards hardware jobs. Selecting this option will introduce jobs that combine both software and significant amounts of hardware expertise.</label>
+            <select value={this.state.includeIEEE} onChange={this.handleChange} name="includeIEEE">
+              <option value={false}>Leave them out</option>
+              <option value={true}>I love hardware!</option>
+            </select>
+          </div>
 
-        <div>
-          <label>Keyword Highlight (optional)</label>
-          <label>Pass up to three keywords for the program to specifically focus on. Additional information will be provided about each of those keywords, including sentences in which they're used, some job listings that mention the keyword, and more!</label>
-          <input type="text" value={this.state.keyword1} onChange={this.handleChange} name="keyword1"></input>
-          <input type="text" value={this.state.keyword2} onChange={this.handleChange} name="keyword2"></input>
-          <input type="text" value={this.state.keyword3} onChange={this.handleChange} name="keyword3"></input>
-        </div>
+          <div className="entry">
+            <label className="entry-label">How many results should we parse through?</label>
+            <label className="entry-additional-info">Note: Parsing through more results will take a longer time, but should provide more sensible statistical results. The Law of Large Numbers, right?</label>
+            <select value={this.state.searchScope} onChange={this.handleChange} name="scope">
+              <option value={"small"}>A few hundred...</option>
+              <option value={"medium"}>Try for a thousand!</option>
+              <option value={"large"}>Give me all you got!</option>
+            </select>
+          </div>
+
+          <div className="entry">
+            <label className="entry-label">Keyword Highlight</label>
+            <label className="entry-additional-info">Pass up to three keywords for the program to specifically focus on. Additional information will be provided about each of those keywords, including sentences in which they're used, some job listings that mention the keyword, and more!</label>
+            <div className="keyword-entry-container">
+              <input type="text" value={this.state.keyword1} onChange={this.handleChange} name="keyword1" className="keyword-entry"></input>
+              <input type="text" value={this.state.keyword2} onChange={this.handleChange} name="keyword2" className="keyword-entry"></input>
+              <input type="text" value={this.state.keyword3} onChange={this.handleChange} name="keyword3" className="keyword-entry"></input>
+            </div>
+          </div>
+        </section>
 
         <input type="submit" value="Submit!"></input>
       </form>

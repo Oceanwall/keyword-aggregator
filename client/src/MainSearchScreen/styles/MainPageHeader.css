@@ -1,0 +1,22 @@
+header h1 {
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 80px;
+  letter-spacing: 0.0325em;
+  margin-bottom: 25px;
+  margin-top: 0px;
+}
+header .information-bubble {
+  width: 24px;
+  margin-top: -10px;
+  margin-left: 700px;
+  cursor: pointer;
+  margin-bottom: -15px;
+  margin-top: 25px;
+}
+header .more-information {
+  position: absolute;
+  width: 300px;
+  /* 75% derived from width of div body from App.css */
+  margin-left: calc((75% - 300px) + 70px);
+  visibility: hidden;
+}
