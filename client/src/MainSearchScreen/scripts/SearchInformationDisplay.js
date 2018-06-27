@@ -4,6 +4,7 @@ const wordAnalysis = require("./wordAnalysis");
 
 //TODO: Separate this component out into more child components?
 //Like advertisements for jobs, example jobs, more buttons, etc...
+//TODO: THIS SHOULDNOT BE IN MAIN SEARCH SCREEN; MOVE??
 class SearchInformationDisplay extends Component {
   constructor(props) {
     super(props);
