@@ -2,17 +2,21 @@
   "name": "keyword-aggregator",
   "version": "1.0.0",
   "scripts": {
+    "build-css": "node-less-chokidar ./client/src/MainSearchScreen/styles/",
+    "watch-css": "npm run build-css && node-less-chokidar ./client/src/MainSearchScreen/styles/  --watch",
     "client": "cd client && yarn start",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\" \"npm run watch-css\""
   },
   "dependencies": {
     "@google-cloud/storage": "^1.7.0",
     "body-parser": "^1.18.3",
+    "classnames": "^2.2.6",
     "compromise": "^11.9.1",
     "dotenv": "^6.0.0",
     "express": "^4.16.2",
     "googleapis": "^32.0.0",
+    "node-less-chokidar": "^0.1.2",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "striptags": "^3.1.1",

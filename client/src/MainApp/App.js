@@ -5,6 +5,8 @@ import SearchInformationDisplay from '../MainSearchScreen/scripts/SearchInformat
 import MainPageHeader from '../MainSearchScreen/scripts/MainPageHeader.js';
 import MainPageFooter from '../MainSearchScreen/scripts/MainPageFooter.js';
 
+const classNames = require("classnames");
+
 class App extends Component {
   constructor() {
     super();

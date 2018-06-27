@@ -21,3 +21,7 @@ yarn-error.log
 GOOGLE_APPLICATION_CREDENTIALS.json
 client_secret.json
 credentials.json
+
+# CSS Styles Craziness
+/client/src/MainSearchScreen/styles/*css
+/client/src/MainSearchScreen/styles/*css.map
