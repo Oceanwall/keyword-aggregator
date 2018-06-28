@@ -17,12 +17,29 @@ header {
     margin-top: 25px;
   }
 
-  .more-information {
+  .moreInfo {
     position: absolute;
-    width: 300px;
-    /* 75% derived from width of div body from App.css */
-    margin-left: calc(-155%);
-    visibility: hidden;
+    max-width: 300px;
+    margin-left: 50%;
+    margin-top: -100px;
+    transition: 0.5s all;
+
+    background: #f7c067;
+    background: linear-gradient(45deg, #f7c067 0%,#ff7f04 52%);
+    color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+
+    padding: 0px 20px 3px;
+    pointer-events: none;
   }
-  
+
+  .showMoreInfo {
+    opacity: 1;
+  }
+
+  .hideMoreInfo {
+    opacity: 0;
+  }
+
 }

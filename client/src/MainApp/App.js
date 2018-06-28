@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import SearchForm from '../MainSearchScreen/scripts/SearchForm.js';
-import SearchInformationDisplay from '../MainSearchScreen/scripts/SearchInformationDisplay.js';
+import SearchInformationDisplay from '../MainInformationDisplay/scripts/InformationDisplay.js';
 import MainPageHeader from '../MainSearchScreen/scripts/MainPageHeader.js';
 import MainPageFooter from '../MainSearchScreen/scripts/MainPageFooter.js';
 
@@ -72,10 +72,12 @@ class App extends Component {
   //TODO: Sliding animation in/out?
   //TODO: cache information? avoid wait for requests? but get loading thing working first xd
 
-  //TODO: create title, header, make form look better
-    //form info in small info hover bubbles? information sidebar or info after title?
   //TODO: Display information (with charts? graphs? idk)
   //TODO: Offer user ability to look at leftover info (?), show ads?
+
+  //TODO: Re wire front end to backend, different formats require different solutions than the ones I used previously
+
+
 
   /*CURRENT PRIORITY LIST:
     1) Figure out how the information should look in final state.

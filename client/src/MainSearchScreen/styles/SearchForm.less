@@ -34,8 +34,8 @@ form {
 
     .entry-showMore {
       display: inline-block;
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       float: right;
       margin-top: 5px;
       cursor: pointer;
@@ -88,6 +88,11 @@ form {
     box-shadow: -4px 4px 6px rgba(71, 82, 90, 0.2);
   }
 
+  //NOTE: Keeps permanently red unless clicked on, might be solvable later?
+  // input[name="description"]:invalid {
+  //   border: 2px solid red;
+  // }
+
   h3 {
     cursor: pointer;
 
@@ -110,7 +115,7 @@ form {
   }
 
   .onlyEntry {
-    margin-top: 130px;
+    margin-top: 110px;
     transition: 0.25s all;
 
     .onlyEntry-largeLabel {

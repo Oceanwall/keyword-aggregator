@@ -4,7 +4,9 @@ import '../styles/MainPageFooter.css';
 
 function MainPageFooter() {
   return (
-    <div>hello world i am footer</div>
+    <footer>
+      <a href="https://github.com/Oceanwall/keyword-aggregator" target="_blank" class="footerLink">Made with <span class="heart">❤</span> by Matthew Zhao</a>
+  </footer>
   )
 }
 
