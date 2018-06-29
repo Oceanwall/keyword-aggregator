@@ -5,7 +5,7 @@ import '../styles/MainPageFooter.css';
 function MainPageFooter() {
   return (
     <footer>
-      <a href="https://github.com/Oceanwall/keyword-aggregator" target="_blank" class="footerLink">Made with <span class="heart">❤</span> by Matthew Zhao</a>
+      <a href="https://github.com/Oceanwall/keyword-aggregator" target="_blank" className="footerLink">Made with <span className="heart">❤</span> by Matthew Zhao</a>
   </footer>
   )
 }

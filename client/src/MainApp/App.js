@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import SearchForm from '../MainSearchScreen/scripts/SearchForm.js';
+import MainSearchScreen from '../MainSearchScreen/scripts/MainSearchScreen.js';
+import LoadingBlurb from '../MainSearchScreen/scripts/LoadingBlurb.js';
+
 import SearchInformationDisplay from '../MainInformationDisplay/scripts/InformationDisplay.js';
-import MainPageHeader from '../MainSearchScreen/scripts/MainPageHeader.js';
-import MainPageFooter from '../MainSearchScreen/scripts/MainPageFooter.js';
 
 const classNames = require("classnames");
 
@@ -12,8 +12,9 @@ class App extends Component {
     super();
     this.state = {
       rawJobInfo: {},
-      searchInformationReceived: false,
       processingInformation: false,
+      searchInformationReceived: false,
+      informationProcessingComplete: false,
     };
 
     this.handleSearchFormCompletion = this.handleSearchFormCompletion.bind(this);
@@ -32,28 +33,28 @@ class App extends Component {
     //TODO: processingInformation should be linked to visibility of loading ubbble
     //TODO: Change string(?) shown by loading bubble, ex: Fetching information, Processing information, etc...
     //NOTE: Inject hard coded JSON in here? to save on fetch processing time
-    fetch("/searchForJobs", {
-      body: JSON.stringify(searchCriteria),
-      headers: {
-        'content-type': 'application/json',
-      },
-      method: "POST",
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((responseInfo) => {
-      this.setState({
-        rawJobInfo: responseInfo
-      });
-      // console.log(this.state.rawJobInfo);
-      this.startWordAnalysis();
-      //TODO: call method that makes stuff happen, activates word analysis component and starts processing.
-    })
-    .catch((error) => {
-      console.log("Error occurred trying to communicate with server in method handleSearchFormCompletion");
-      console.error(error);
-    });
+    // fetch("/searchForJobs", {
+    //   body: JSON.stringify(searchCriteria),
+    //   headers: {
+    //     'content-type': 'application/json',
+    //   },
+    //   method: "POST",
+    // })
+    // .then((response) => {
+    //   return response.json();
+    // })
+    // .then((responseInfo) => {
+    //   this.setState({
+    //     rawJobInfo: responseInfo
+    //   });
+    //   // console.log(this.state.rawJobInfo);
+    //   this.startWordAnalysis();
+    //   //TODO: call method that makes stuff happen, activates word analysis component and starts processing.
+    // })
+    // .catch((error) => {
+    //   console.log("Error occurred trying to communicate with server in method handleSearchFormCompletion");
+    //   console.error(error);
+    // });
   }
 
   startWordAnalysis() {
@@ -65,7 +66,8 @@ class App extends Component {
 
   completeWordAnalysis() {
     this.setState({
-      processingInformation: false
+      processingInformation: false,
+      informationProcessingComplete: true,
     });
   }
 
@@ -104,11 +106,16 @@ class App extends Component {
     return (
       <div className="application-body">
         <div>
-          <MainPageHeader />
-          <SearchForm
+          <MainSearchScreen
             handleSearchFormCompletion={this.handleSearchFormCompletion}
+            processingInformation={this.state.processingInformation}
+            informationProcessingComplete={this.state.informationProcessingComplete}
           />
-          <MainPageFooter />
+          <LoadingBlurb
+            processingInformation={this.state.processingInformation}
+            searchInformationReceived={this.state.searchInformationReceived}
+            // informationProcessingComplete={this.state.informationProcessingComplete}
+          />
         </div>
         <div>
           {this.state.searchInformationReceived && <SearchInformationDisplay

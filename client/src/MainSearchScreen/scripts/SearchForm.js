@@ -20,7 +20,6 @@ class SearchForm extends Component {
       keyword1: "",
       keyword2: "",
       keyword3: "",
-      handleSearchFormCompletion: props.handleSearchFormCompletion,
       //BELOW HERE ARE FORM VISIBILITY FIELDS
       showMoreJobs: false,
       showMoreIEEE: false,
@@ -28,6 +27,9 @@ class SearchForm extends Component {
       showMoreHightlight: false,
       showOptionalFields: false,
       optionalFieldsStatus: "Show",
+      //INHERITED FIELDS FROM PARENT COMPONENT
+      processingInformation: props.processingInformation,
+      handleSearchFormCompletion: props.handleSearchFormCompletion,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -36,8 +38,29 @@ class SearchForm extends Component {
     this.toggleOptionalFields = this.toggleOptionalFields.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.processingInformation != prevProps.processingInformation) {
+      this.setState({
+        processingInformation: this.props.processingInformation
+      });
+      this.wrapUpOptionalFields();
+    }
+  }
+
+  wrapUpOptionalFields() {
+    this.setState({
+      showMoreJobs: false,
+      showMoreIEEE: false,
+      showMoreParse: false,
+      showMoreHightlight: false,
+      showOptionalFields: false,
+      optionalFieldsStatus: "Show",
+    });
+  }
+
+  //Allow keywords and description to have spaces, block location from having spaces
   handleChange(event) {
-    if (event.target.name == "description" || event.target.value.indexOf(" ") == -1) {
+    if (event.target.name != "location" || event.target.value.indexOf(" ") == -1) {
       this.setState({
         [event.target.name]: event.target.value,
       });
@@ -144,7 +167,7 @@ class SearchForm extends Component {
           <div className="entry">
             <label className="entry-label">Keyword Highlight</label>
             <img className={(this.state.showMoreHightlight) ? "entry-showedMore entry-showMore" : "entry-showMore"} src="./images/info-plus.png" onClick={this.showMoreInfo} name="showMoreHightlight"/>
-          <label className={(this.state.showMoreHightlight) ? "entry-additionalInfoShown" : "hide"}>Pass up to three individual keywords for the program to specifically focus on. Additional information will be provided about each of those keywords, including sentences in which they're used, some job listings that mention the keyword, and more! No spaces, please!</label>
+          <label className={(this.state.showMoreHightlight) ? "entry-additionalInfoShown" : "hide"}>Pass up to three individual keywords for the program to specifically focus on. Additional information will be provided about each of those keywords, including sentences in which they're used, some job listings that mention the keyword, and more!</label>
             <div className="entry-keywordContainer">
               <input type="text" value={this.state.keyword1} onChange={this.handleChange} name="keyword1" className="entry-keywordContainer-box" maxLength="20"></input>
               <input type="text" value={this.state.keyword2} onChange={this.handleChange} name="keyword2" className="entry-keywordContainer-box" maxLength="20"></input>

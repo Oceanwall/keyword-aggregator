@@ -8,6 +8,9 @@ function getJobs(searchCriteria) {
     let targetURL = GITHUB_BASE_URL;
     let objectPairings = Object.entries(searchCriteria);
 
+    //TODO: MAKE CHANGES TO THIS SO THAT IT RESPECTS THE CRITERIA
+    //object params (if non falsey):
+
     for (let i = 0; i < objectPairings.length; i++) {
       targetURL = `${targetURL}${objectPairings[i][0]}=${objectPairings[i][1]}&`;
     }
