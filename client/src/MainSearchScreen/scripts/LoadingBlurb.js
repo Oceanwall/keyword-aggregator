@@ -19,26 +19,32 @@ class LoadingBlurb extends Component {
         processingInformation: this.props.processingInformation,
         searchInformationReceived: this.props.searchInformationReceived,
       });
-      this.changeMessage();
+      this.changeMessage(this.props.processingInformation, this.props.searchInformationReceived);
     }
   }
 
-  changeMessage() {
-    if (this.state.searchInformationReceived) {
-      this.setState({
-        loadingStatus: "Currently sorting and organizing information"
-      });
-    }
-    else if (this.state.processingInformation) {
+  //TODO: make sure that this resets when user wants to search for another word?
+  changeMessage(processingInformation, searchInformationReceived) {
+    if (processingInformation && !searchInformationReceived) {
       this.setState({
         loadingStatus: "Currently fetching job data"
       });
     }
+    else if (searchInformationReceived) {
+      this.setState({
+        loadingStatus: "Currently sorting and organizing information"
+      });
+    }
+
+    console.log(searchInformationReceived);
   }
 
   render() {
     return (
-      <div className={(this.state.processingInformation) ? "loadingInfoBlurb" : "loadingInfoBlurb hide"}>{this.state.loadingStatus}, please wait!</div>
+      <div className={(this.state.processingInformation) ? "loadingInfoBlurb" : "loadingInfoBlurb hide"}>
+        {this.state.loadingStatus}
+        <div class="loader"></div>
+      </div>
     );
   }
 

@@ -11,5 +11,26 @@
   top: -9999px !important;
   left: -9999px !important;
   opacity: 0;
-  transition: 0.25s all;
+  transition: 0.25s opacity;
+}
+
+
+/* Animations to transition between search form and info display
+   NOTE: Lots of JS controls some of the styles, which is not shown here.
+*/
+.hideUpTop {
+  margin-bottom: 100vh;
+}
+.showUpTop {
+  margin-bottom: 0vh;
+}
+.hideDownBelow {
+  margin-top: 100vh;
+}
+.showDownBelow {
+  margin-top: 0vh;
+}
+
+.notDisplayed {
+  display: none;
 }

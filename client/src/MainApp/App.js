@@ -5,8 +5,6 @@ import LoadingBlurb from '../MainSearchScreen/scripts/LoadingBlurb.js';
 
 import SearchInformationDisplay from '../MainInformationDisplay/scripts/InformationDisplay.js';
 
-const classNames = require("classnames");
-
 class App extends Component {
   constructor() {
     super();
@@ -15,12 +13,13 @@ class App extends Component {
       processingInformation: false,
       searchInformationReceived: false,
       informationProcessingComplete: false,
+      searchScreenClasses: "showUpTop",
+      infoDisplayClasses: "hideDownBelow notDisplayed",
     };
 
     this.handleSearchFormCompletion = this.handleSearchFormCompletion.bind(this);
     this.completeWordAnalysis = this.completeWordAnalysis.bind(this);
   }
-
 
   handleSearchFormCompletion(searchCriteria) {
     //TODO: maybe do some things with pop up notifications and stuff?
@@ -30,6 +29,16 @@ class App extends Component {
     this.setState({
       processingInformation: true
     });
+    setTimeout(() => {
+      this.setState({
+        searchInformationReceived: true
+      });
+      setTimeout(() => {
+        this.completeWordAnalysis();
+      }, 3000);
+    }, 1500);
+
+
     //TODO: processingInformation should be linked to visibility of loading ubbble
     //TODO: Change string(?) shown by loading bubble, ex: Fetching information, Processing information, etc...
     //NOTE: Inject hard coded JSON in here? to save on fetch processing time
@@ -65,10 +74,46 @@ class App extends Component {
   }
 
   completeWordAnalysis() {
+    //process screen change first, then set states
+
+    //Shenanigans to control frame changes.
     this.setState({
-      processingInformation: false,
-      informationProcessingComplete: true,
+      infoDisplayClasses: "hideDownBelow"
     });
+    window.scroll({
+      top: 0
+    });
+
+    setTimeout(() => {
+      this.setState({
+        searchScreenClasses: "hideUpTop",
+        infoDisplayClasses: "showDownBelow"
+      });
+      window.scroll({
+        top: window.innerHeight,
+        behavior: 'smooth'
+      });
+    }, 50);
+
+    setTimeout(() => {
+      //combine them?
+      this.setState({
+        searchScreenClasses: "hideUpTop notDisplayed"
+      });
+      this.setState({
+        processingInformation: false,
+        informationProcessingComplete: true,
+      });
+    }, 400);
+
+
+
+
+
+    // this.setState({
+    //   processingInformation: false,
+    //   informationProcessingComplete: true,
+    // });
   }
 
   //TODO: Sliding animation in/out?
@@ -105,7 +150,7 @@ class App extends Component {
   render() {
     return (
       <div className="application-body">
-        <div>
+        <div className={this.state.searchScreenClasses}>
           <MainSearchScreen
             handleSearchFormCompletion={this.handleSearchFormCompletion}
             processingInformation={this.state.processingInformation}
@@ -117,7 +162,7 @@ class App extends Component {
             // informationProcessingComplete={this.state.informationProcessingComplete}
           />
         </div>
-        <div>
+        <div className={this.state.infoDisplayClasses}>
           {this.state.searchInformationReceived && <SearchInformationDisplay
             rawJobInfo={this.state.rawJobInfo}
             completeWordAnalysis={this.completeWordAnalysis}

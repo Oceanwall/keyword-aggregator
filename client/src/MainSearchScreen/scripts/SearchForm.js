@@ -5,6 +5,7 @@ import '../styles/SearchForm.css';
 //TODO: Validate text, ensure that script tags can't be executed
 //TODO: Autocomplete, spelling checker? maybe integrate google cloud job search API or some other spell checker this way?
 //TODO: blur field area on submit so that they can't mess with it.
+//TODO: UNSELECT EVERYTHING
 
 class SearchForm extends Component {
 
@@ -69,6 +70,7 @@ class SearchForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    document.activeElement.blur();
     //Object should contain description, location, fulltime, searchScope, includeIEEE, and keywords (if they exist).
     let searchCriteriaObject = {
       description: this.state.description.trim().split(' ').join('+'),

@@ -18,7 +18,8 @@ class SearchInformationDisplay extends Component {
   }
 
   componentDidMount() {
-    this.processInformation();
+    // NOTE: remove comment whend one
+    //this.processInformation();
   }
 
   processInformation() {
@@ -34,6 +35,7 @@ class SearchInformationDisplay extends Component {
     this.setState({processComplete: true});
   }
 
+  //TODO: COMPONENTIZE THIS
   render() {
     return (
       <div>
