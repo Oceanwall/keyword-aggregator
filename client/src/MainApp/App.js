@@ -29,47 +29,35 @@ class App extends Component {
     this.setState({
       processingInformation: true
     });
-    setTimeout(() => {
-      this.setState({
-        searchInformationReceived: true
-      });
-      setTimeout(() => {
-        this.completeWordAnalysis();
-      }, 3000);
-    }, 1500);
 
-
-    //TODO: processingInformation should be linked to visibility of loading ubbble
-    //TODO: Change string(?) shown by loading bubble, ex: Fetching information, Processing information, etc...
     //NOTE: Inject hard coded JSON in here? to save on fetch processing time
-    // fetch("/searchForJobs", {
-    //   body: JSON.stringify(searchCriteria),
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   },
-    //   method: "POST",
-    // })
-    // .then((response) => {
-    //   return response.json();
-    // })
-    // .then((responseInfo) => {
-    //   this.setState({
-    //     rawJobInfo: responseInfo
-    //   });
-    //   // console.log(this.state.rawJobInfo);
-    //   this.startWordAnalysis();
-    //   //TODO: call method that makes stuff happen, activates word analysis component and starts processing.
-    // })
-    // .catch((error) => {
-    //   console.log("Error occurred trying to communicate with server in method handleSearchFormCompletion");
-    //   console.error(error);
-    // });
+    fetch("/searchForJobs", {
+      body: JSON.stringify(searchCriteria),
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: "POST",
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseInfo) => {
+      this.setState({
+        rawJobInfo: responseInfo
+      });
+      // console.log(this.state.rawJobInfo);
+      this.startWordAnalysis();
+    })
+    .catch((error) => {
+      console.log("Error occurred trying to communicate with server in method handleSearchFormCompletion");
+      console.error(error);
+    });
   }
 
   startWordAnalysis() {
-    //TODO: activate a loading screen of some sort over the entire page?
     this.setState({
-      searchInformationReceived: true
+      searchInformationReceived: true,
+      infoDisplayClasses: "hideDownBelow"
     });
   }
 
@@ -77,9 +65,6 @@ class App extends Component {
     //process screen change first, then set states
 
     //Shenanigans to control frame changes.
-    this.setState({
-      infoDisplayClasses: "hideDownBelow"
-    });
     window.scroll({
       top: 0
     });
@@ -105,25 +90,14 @@ class App extends Component {
         informationProcessingComplete: true,
       });
     }, 400);
-
-
-
-
-
-    // this.setState({
-    //   processingInformation: false,
-    //   informationProcessingComplete: true,
-    // });
   }
 
-  //TODO: Sliding animation in/out?
   //TODO: cache information? avoid wait for requests? but get loading thing working first xd
 
   //TODO: Display information (with charts? graphs? idk)
   //TODO: Offer user ability to look at leftover info (?), show ads?
 
   //TODO: Re wire front end to backend, different formats require different solutions than the ones I used previously
-
 
 
   /*CURRENT PRIORITY LIST:
@@ -144,7 +118,8 @@ class App extends Component {
     //slide motion (right, left) to switch between graphs and tables and maybe a resume slider?
 
     //search form completion, loading blurb (with option to cancel?)
-    //add cover div as well?
+
+    //TODO: COMPLETE IEEE SEARCH, GET HARDCODED INFO??, MAKE SURE ALL SEARCHES WORK IN TANDEM
 
 
   render() {

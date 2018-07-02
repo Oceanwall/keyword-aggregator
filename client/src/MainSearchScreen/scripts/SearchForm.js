@@ -16,7 +16,7 @@ class SearchForm extends Component {
       description: "",
       location: "",
       fulltime: false,
-      searchScope: "small",
+      scope: "small",
       includeIEEE: false,
       keyword1: "",
       keyword2: "",
@@ -71,16 +71,16 @@ class SearchForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     document.activeElement.blur();
-    //Object should contain description, location, fulltime, searchScope, includeIEEE, and keywords (if they exist).
+    //Object should contain description, location, fulltime, scope, includeIEEE, and keywords (if they exist).
     let searchCriteriaObject = {
       description: this.state.description.trim().split(' ').join('+'),
       location: this.state.location,
       fulltime: this.state.fulltime,
-      searchScope: this.state.searchScope,
+      scope: this.state.scope,
       includeIEEE: this.state.includeIEEE,
-      keyword1: this.state.keyword1,
-      keyword2: this.state.keyword2,
-      keyword3: this.state.keyword3,
+      keyword1: this.state.keyword1.trim(),
+      keyword2: this.state.keyword2.trim(),
+      keyword3: this.state.keyword3.trim(),
     };
 
     //Removes falsey values
@@ -159,7 +159,7 @@ class SearchForm extends Component {
             <label className="entry-label">How many results should we parse through?</label>
             <img className={(this.state.showMoreParse) ? "entry-showedMore entry-showMore" : "entry-showMore"} src="./images/info-plus.png" src="./images/info-plus.png" onClick={this.showMoreInfo} name="showMoreParse"/>
             <label className={(this.state.showMoreParse) ? "entry-additionalInfoShown" : "hide"}>Parsing through more results will take a longer time, but should provide more sensible statistical results. The Law of Large Numbers, right?</label>
-            <select value={this.state.searchScope} onChange={this.handleChange} name="scope">
+            <select value={this.state.scope} onChange={this.handleChange} name="scope">
               <option value={"small"}>A few hundred.</option>
               <option value={"medium"}>About a thousand.</option>
               <option value={"large"}>Try for ten thousand!</option>

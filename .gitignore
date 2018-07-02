@@ -17,11 +17,6 @@ build/
 yarn-error.log
 /client/yarn-error.log
 
-# Google developer authentication details
-GOOGLE_APPLICATION_CREDENTIALS.json
-client_secret.json
-credentials.json
-
 # CSS Styles Craziness
 /client/src/MainSearchScreen/styles/*css
 /client/src/MainSearchScreen/styles/*css.map

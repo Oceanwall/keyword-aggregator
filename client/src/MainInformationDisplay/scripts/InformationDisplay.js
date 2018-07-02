@@ -18,8 +18,7 @@ class SearchInformationDisplay extends Component {
   }
 
   componentDidMount() {
-    // NOTE: remove comment whend one
-    //this.processInformation();
+    this.processInformation();
   }
 
   processInformation() {
@@ -35,11 +34,11 @@ class SearchInformationDisplay extends Component {
     this.setState({processComplete: true});
   }
 
-  //TODO: COMPONENTIZE THIS
+  //TODO: COMPONENTIZE THIS and make them non visible? or at least visibility hidden until ready? and use display: inline and position absolute to hide? idk
   render() {
     return (
       <div>
-        <div>hello world</div>
+        {/* <div>hello world</div> */}
         <div>{this.state.processedInfo.sortedPairings}</div>
       </div>
     );

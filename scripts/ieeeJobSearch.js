@@ -6,60 +6,101 @@ const IEEE_RSS_URL = "?view=List&format=rss";
 const cheerio = require('cheerio');
 
 function getJobs(searchCriteria) {
-  //TODO: Add pages to URL search, make multiple requests before resolving?
+  //TODO: Limit IEEE, as it takes the longest out of all the search options and is also the buggiest
   return new Promise(function(resolve, reject) {
-    let targetURL = IEEE_BASE_URL;
-    console.log(searchCriteria);
-
-    targetURL = `${targetURL}${searchCriteria.description}`;
-    if (searchCriteria.location != "") {
-      targetURL = `${targetURL}/${searchCriteria.location}?radius=50&SearchNetworks=US&networkView=national`;
+    let jobPromiseArray = [];
+    let numPages;
+    switch(searchCriteria.scope) {
+      //NOTE: CONNECTION GETS RESET BY IEEE, probably because too many calls? debug in future.
+      case("small"):
+        numPages = 1;
+        break;
+      case("medium"):
+        // numPages = 2;
+        numPages = 1;
+        break;
+      case("large"):
+        // numPages = 3;
+        numPages = 1;
+        break;
     }
-    targetURL = `${targetURL}${IEEE_RSS_URL}`;
 
-    console.log(targetURL);
+    for (let i = 1; i <= numPages; i++) {
+      jobPromiseArray[i-1] = new Promise(function(resolve, reject) {
 
-    const options = {
-      uri: targetURL,
-      headers: {
-        'User-Agent': 'Request-Promise'
-      },
-      json: true,
-    };
+        let targetURL = IEEE_BASE_URL;
 
-    rp(options)
-    .then((response) => {
-      parseString(response, function (err, result) {
-        let offers = [];
-        let index = 0;
+        targetURL += `${searchCriteria.description}`;
 
-        for (let item of result.rss.channel[0].item) {
-          let jobOfferOptions = {uri: item.link[0], json: true};
-          let jobDescription = "";
-
-          offers[index] = rp(jobOfferOptions).then((jobOfferPage) => {
-            let $ = cheerio.load(jobOfferPage);
-
-            $("*[itemprop = 'description']").each((index, elem) => {
-              jobDescription += ($(elem).html() + " ");
-            });
-
-            let offerObject = {description: jobDescription, title: item.title[0], link: item.link[0]};
-            return offerObject;
-          });
-          index++;
+        if (searchCriteria.location) {
+          targetURL += `/${searchCriteria.location}?radius=50&SearchNetworks=US&networkView=national`;
         }
 
-        //NOTE: Slow server side waiting? is this correct?
-        Promise.all(offers).then((completedOfferInquiries) => {
-          resolve(completedOfferInquiries);
+        targetURL += `?page=${i}${IEEE_RSS_URL}`;
+
+        console.log(targetURL);
+
+        const options = {
+          uri: targetURL,
+          headers: {
+            'User-Agent': 'Request-Promise'
+          },
+          json: true,
+        };
+
+        rp(options)
+        .then((response) => {
+          parseString(response, function (err, result) {
+            let offers = [];
+            let index = 0;
+
+            if (result.rss.channel[0].item) {
+              for (let item of result.rss.channel[0].item) {
+                let jobOfferOptions = {uri: item.link[0], json: true};
+                let jobDescription = "";
+
+                offers[index] = rp(jobOfferOptions).then((jobOfferPage) => {
+                  let $ = cheerio.load(jobOfferPage);
+
+                  $("*[itemprop = 'description']").each((index, elem) => {
+                    jobDescription += ($(elem).html() + " ");
+                  });
+
+                  let offerObject = {description: jobDescription, title: item.title[0], link: item.link[0]};
+                  return offerObject;
+                })
+                .catch((error) => {
+                  console.log("An error occurred while trying to fetch an item on a page using rp in IEEE Job Search");
+                  console.error(error);
+                })
+
+                index++;
+              }
+            }
+
+            Promise.all(offers).then((completedOfferInquiries) => {
+              resolve(completedOfferInquiries);
+            });
+          });
+        })
+        .catch((error) => {
+          console.log("An error occurred while trying to fetch page search data using rp in IEEE Job Search");
+          console.error(error);
+          reject(error);
         });
+
       });
+    }
+
+    Promise.all(jobPromiseArray)
+    .then((completedSearches) => {
+      resolve(completedSearches);
     })
     .catch((error) => {
-      console.error(error);
-      reject(error);
+      console.log("There was problem in waiting for the requests from IEEE Job Search to resolve");
+      console.err(error);
     });
+
   });
 }
 
