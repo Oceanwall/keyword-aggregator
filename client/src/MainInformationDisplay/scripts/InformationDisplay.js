@@ -9,7 +9,7 @@ class SearchInformationDisplay extends Component {
     super(props);
     this.state = {
       rawInfo: props.rawJobInfo,
-      processedInfo: [],
+      processedInfo: {},
       leftoverString: "",
       completeWordAnalysis: props.completeWordAnalysis,
       processComplete: false,
@@ -37,8 +37,9 @@ class SearchInformationDisplay extends Component {
   render() {
     return (
       <div>
-        {/* <div>hello world</div> */}
-        <div>{this.state.processedInfo.sortedPairings}</div>
+        {this.state.processComplete &&
+          <div>{this.state.processedInfo.sortedPairings.all}</div>
+        }
       </div>
     );
   }
