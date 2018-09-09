@@ -21,8 +21,6 @@ app.post('/searchForJobs', (req, res) => {
   let jobSearchResults = getJobInformation(req.body);
 
   Promise.all(jobSearchResults).then((completedSearches) => {
-
-    // console.log(completedSearches);
     res.send({result: completedSearches});
   });
 });

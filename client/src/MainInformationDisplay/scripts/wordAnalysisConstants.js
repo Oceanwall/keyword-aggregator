@@ -1,8 +1,8 @@
-const FRAMEWORKS = ["asp.net", ".net", "ruby on rails", "laravel", "vuejs", "vue.js", "angular js", "angularjs", "angular 2+", "angular 2", "angular 4", "angular5", "angular6", "react native", "express", "twig", "rabbit", "cocoa", "node"];
+const FRAMEWORKS = ["asp.net", ".net", "ruby on rails", "laravel", "vuejs", "vue.js", "angular js", "angularjs", "angular 2+", "angular 2", "angular 4", "angular 5", "angular 6", "express", "twig", "rabbit", "cocoa", "node.js", "node", "reactjs", "react.js", "react native"];
 
 const SOFTWARE = ["mathematica", "posegresql", "mysql", "saltstack", "puppet", "ansible", "elasticsearch", "kibana", "spark", "hadoop", "mongodb", "databricks", "redis", "cassandra", "voldemort", "google cloud", "kubernetes"];
 
-const LIBRARIES = ["opengl", "babel", "redux", "bootstrap", "jquery", "requirejs", "backbone", "react", "reactjs", "react.js", "glue"];
+const LIBRARIES = ["opengl", "babel", "redux", "bootstrap", "jquery", "requirejs", "backbone", "glue"];
 
 const TOOLS = ["git", "bash", "curl", "mocha", "chai", "amazon web services", "aws", "jira", "gulp", "grunt", "composer", "pip", "npm", "yarn", "pimple", "docker", "wordpress", "google analytics", "redshift", "snowflake", "kinesis"];
 
@@ -14,7 +14,7 @@ const PERSONAL_CHARACTERISTICS = ["english", "mandarin", "hindi", "self-driven",
 const LANGUAGES = ["c++", "c#", "objective-c", "obj-c", " c ", " c,", "visual basic", "assembly", "f#", "cfml", "lisp", "fortran", " go ", " go,", "golang", "haskell", "javascript", "js", "java", " scala ", " scala,", "matlab", "julia", "lingo", "pascal", "ecmascript", "es2015", "es6", "ocaml", "perl", "php", "python", "ruby", "rust", "scheme", "swift", "xml", "html", "css", "json", "kotlin", "typescript", "coffeescript", "sql", "sass", "less", "jasmine"];
 
 // Note: Spaces and commas will automatically be filtered out when applying to map, so don't correct for those
-const MERGE = [{category: "Frameworks", changes: [["asp.net", ".net"], ["vue.js", "vuejs"], ["angularjs", "angular js"], ["angular 2+", "angular 2", "angular3", "angular 4", "angular 5", "angular 6"]]}, {category: "Languages", changes: [["objective-c", "obj-c"], ["go", "golang"], ["javascript", "js", "ecmascript", "es2015", "es6"]]}]
+const MERGE = [{category: "Frameworks", changes: [["asp.net", ".net"], ["vue.js", "vuejs"], ["angularjs", "angular js"], ["angular 2+", "angular 2", "angular 4", "angular 5", "angular 6"], ["node.js", "node"], ["react.js", "reactjs"]]}, {category: "Languages", changes: [["objective-c", "obj-c"], ["go", "golang"], ["javascript", "js", "ecmascript", "es2015", "es6"]]}]
 
 const TECH_TERMS = [{name: "Frameworks", data: FRAMEWORKS}, {name: "Software", data: SOFTWARE}, {name: "Libraries", data: LIBRARIES}, {name: "Tools", data: TOOLS}, {name: "Concepts", data: CONCEPTS}, {name: "Personal Characteristics", data: PERSONAL_CHARACTERISTICS}, {name: "Languages", data: LANGUAGES}];
 

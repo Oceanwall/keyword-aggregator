@@ -78,9 +78,7 @@ class SearchForm extends Component {
       fulltime: this.state.fulltime,
       scope: this.state.scope,
       includeIEEE: this.state.includeIEEE,
-      keyword1: this.state.keyword1.trim(),
-      keyword2: this.state.keyword2.trim(),
-      keyword3: this.state.keyword3.trim(),
+      keywords: this.processKeywords(this.state.keyword1, this.state.keyword2, this.state.keyword3)
     };
 
     //Removes falsey values
@@ -91,6 +89,22 @@ class SearchForm extends Component {
     }
 
     this.state.handleSearchFormCompletion(searchCriteriaObject);
+  }
+
+  processKeywords(keyword1, keyword2, keyword3) {
+    let keywords = [];
+    // Ugly, but it works!
+    if (keyword1.trim()) {
+      keywords.push(keyword1);
+    }
+    if (keyword2.trim()) {
+      keywords.push(keyword2);
+    }
+    if (keyword3.trim()) {
+      keywords.push(keyword3);
+    }
+
+    return keywords;
   }
 
   showMoreInfo(event) {

@@ -1,42 +1,66 @@
 import { TECH_TERMS, MERGE } from './wordAnalysisConstants.js';
 const striptags = require('striptags');
 
-//TODO: Do these later, when other work is done, this is optimization below:
-//TODO: Merge all of these arrays into 'BY-MOST' to maximize efficiency? Make sure repeat entries (java, javascript) arent being procced
 //TODO: Make this array better, more comprehensive (note: this is sad slave grunt work, feelsbadman)
-
 //TODO: Include keyword search stuff, maybe limit number of examples (or make parsable on demand, like search 100 at a time until out?)
-
-//TODO: Fix: node, check indvidual categories, etc... start on other functions offered
-
-//TODO: combine similar terms? (Example: objective-c, obj-c)
+//TODO: start on other functions offered
 //TODO: Add option to let user see words that weren't parsed and removed, give them option to consider?? form to submit additional missed words?
 
-//TODO: Reorder this? bruh i have no idea this algorithm is wacky yo
-
-//TODO: modularize the algorithm?
 function analyzeWords(offers) {
-  console.log(offers.result);
-
   //one string consisting of all offers
+  let cleanOfferString = getCleanOffers(offers.result);
+
+  //Get the frequencies of each word in the word soup.
+  //Returns an object frequencyData with params wordFrequencyMaps and totalNumWords
+  let frequencyData = getFrequencyMaps(cleanOfferString);
+
+  //Merge associated words
+  mergeAssociatedWords(frequencyData.wordFrequencyMaps);
+
+  // Covert maps into (sorted) lists
+  let wordFrequencyPairings = getSortedFrequencyLists(frequencyData.wordFrequencyMaps);
+
+  // Return three things:
+  // 1) Sorted word frequencies (all categories, separated by categories)
+  // 2) Total number of (terms) processed
+  return {
+    sortedPairings: wordFrequencyPairings,
+    totalNumWords: frequencyData.totalNumWords
+  };
+}
+
+function getJobs(offers) {
+  console.log(offers.result);
+  // 
+  // processStackOverflowJobs(offers.result[0]);
+  return [];
+}
+
+function clean(word) {
+  word = word.replace(new RegExp(',', 'g'), "");
+  word = word.trim();
+  return word;
+}
+
+function getCleanOffers(jobOffers) {
   let totalOfferString = "";
-  for (let offerArray of offers.result) {
+  for (let offerArray of jobOffers) {
     for (let offerChoice of offerArray) {
       for (let offer of offerChoice) {
         totalOfferString += offer.description;
       }
     }
   }
-  let cleanOfferString = striptags(totalOfferString).toLowerCase().replace(/[&\/\\,\(\)$~%\.\-!^'"\;:*?\[\]<>{}]/g, ' ');
+  return striptags(totalOfferString).toLowerCase().replace(/[&\/\\,\(\)$~%\.\-!^'"\;:*?\[\]<>{}]/g, ' ');
+}
 
+function getFrequencyMaps(cleanOfferString) {
   //Set up array of pairings, total # of words
   let wordFrequencyMaps = {};
   let totalNumWords = 0;
 
-  //Get the frequencies of each word in the word soup.
   for (let category of TECH_TERMS) {
     let frequencies = new Map();
-
     for (let word of category.data) {
       let wordIndex = cleanOfferString.indexOf(word);
       let numWords = 0;
@@ -54,10 +78,13 @@ function analyzeWords(offers) {
 
       totalNumWords += numWords;
     }
-
     wordFrequencyMaps[category.name] = frequencies;
   }
 
+  return { totalNumWords : totalNumWords, wordFrequencyMaps: wordFrequencyMaps };
+}
+
+function mergeAssociatedWords(wordFrequencyMaps) {
   // Merge associated words
   for (let mergeRequests of MERGE) {
     let targetMap = wordFrequencyMaps[mergeRequests.category];
@@ -65,19 +92,26 @@ function analyzeWords(offers) {
     for (let changes of mergeRequests.changes) {
       // The first value in change is designated as the actual name.
       let actualName = changes[0];
+      if (!targetMap.has(actualName)) {
+        targetMap.set(actualName, 0);
+      }
+
       let cloneCountSum = 0;
       for (let i = 1; i < changes.length; i++) {
-        cloneCountSum += targetMap.get(changes[i]);
-        targetMap.delete(changes[i]);
+        // Avoid NaN error
+        if (targetMap.has(changes[i])) {
+          cloneCountSum += targetMap.get(changes[i]);
+          targetMap.delete(changes[i]);
+        }
       }
       targetMap.set(actualName, targetMap.get(actualName) + cloneCountSum);
     }
   }
 
-  console.log("Hello");
-  console.log(wordFrequencyMaps);
+  return wordFrequencyMaps;
+}
 
-  // Covert maps into lists
+function getSortedFrequencyLists(wordFrequencyMaps) {
   let wordFrequencyPairings = {all: []};
   for (let category of TECH_TERMS) {
     let frequencyList = [];
@@ -89,6 +123,7 @@ function analyzeWords(offers) {
     wordFrequencyPairings.all = wordFrequencyPairings.all.concat(frequencyList);
   }
 
+  //sort the lists
   for (let pairing in wordFrequencyPairings) {
     if (wordFrequencyPairings.hasOwnProperty(pairing)) {
       wordFrequencyPairings[pairing].sort(function(a, b) {
@@ -97,26 +132,8 @@ function analyzeWords(offers) {
     }
   }
 
-  console.log(wordFrequencyPairings);
-
-  // Return three things:
-  // 1) Sorted word frequencies (all categories)
-  // 2) Sorted word frequencies (separated by categories)
-  // (Both of these ^ are in ONE object)
-  // 3) Leftover string? (Is this necessary?)
-  return {
-    sortedPairings: wordFrequencyPairings,
-    leftoverString: cleanOfferString,
-  };
-
-
-}
-
-function clean(word) {
-  word = word.replace(new RegExp(',', 'g'), "");
-  word = word.trim();
-  return word;
+  return wordFrequencyPairings;
 }
 
 
-export { analyzeWords }
+export { analyzeWords, getJobs }

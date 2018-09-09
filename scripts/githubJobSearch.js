@@ -8,7 +8,7 @@ function getJobs(searchCriteria) {
     console.log(searchCriteria);
     switch(searchCriteria.scope) {
       case("small"):
-        numPages = 1;
+        numPages = 3;
         break;
       case("medium"):
         numPages = 5;

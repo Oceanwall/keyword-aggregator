@@ -9,7 +9,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      rawJobInfo: {},
+      rawJobInfo: {}, //rawjobinfo also contains hasKeywords and the keywords array
       processingInformation: false,
       searchInformationReceived: false,
       informationProcessingComplete: false,
@@ -22,28 +22,23 @@ class App extends Component {
   }
 
   handleSearchFormCompletion(searchCriteria) {
-    //TODO: yell at people trying to GET this URL
-    console.log(searchCriteria);
-    this.setState({
-      processingInformation: true
-    });
+    console.log(searchCriteria.keywords);
+    this.setState({ processingInformation: true });
 
     //NOTE: Inject hard coded JSON in here? to save on fetch processing time
     fetch("/searchForJobs", {
       body: JSON.stringify(searchCriteria),
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { 'content-type': 'application/json' },
       method: "POST",
     })
     .then((response) => {
       return response.json();
     })
     .then((responseInfo) => {
-      this.setState({
-        rawJobInfo: responseInfo
-      });
-      // console.log(this.state.rawJobInfo);
+      if (searchCriteria.keywords) {
+        responseInfo.keywords = searchCriteria.keywords;
+      }
+      this.setState({ rawJobInfo: responseInfo });
       this.startWordAnalysis();
     })
     .catch((error) => {
@@ -136,10 +131,11 @@ class App extends Component {
           />
         </div>
         <div className={this.state.infoDisplayClasses}>
-          {this.state.searchInformationReceived && <SearchInformationDisplay
-            rawJobInfo={this.state.rawJobInfo}
-            completeWordAnalysis={this.completeWordAnalysis}
-          />}
+          {this.state.searchInformationReceived &&
+            <SearchInformationDisplay
+              rawJobInfo={this.state.rawJobInfo}
+              completeWordAnalysis={this.completeWordAnalysis}
+            />}
         </div>
       </div>
     );

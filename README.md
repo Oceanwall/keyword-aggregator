@@ -7,10 +7,10 @@ This project is optimized towards the different flavors of software engineering 
 **TODO:**
 - ( ) Get hardcoded JSON data and store in JSON file for example data processing and rendering use
 - ( ) Revamp the word analysis algorithm, making it more comprehensive and also giving it additional capabilities.
-        - Method 1: Overall word popularity
-        - Method 2: Specific keywords
-        - Method 3: Job Listings in general (?)
-- ( ) Make the search page CSS mobile-friendly, redesign as necessary.
+  - Method 1: Overall word popularity
+  - Method 2: Specific keywords
+  - Method 3: Job Listings in general (?)
+- ( ) Make the search page CSS mobile-friendly, redesign as necessary. (add exit button on currently fetching job data?) (error handling on server disconnect and error?)
 - ( ) Ensure sanitization of form inputs
 - ( ) Begin work on information display dashboard.
 - ( ) Make sure that app is reusable after a search (reset all fields, etc, etc)

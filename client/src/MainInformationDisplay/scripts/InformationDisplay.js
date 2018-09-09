@@ -9,7 +9,8 @@ class SearchInformationDisplay extends Component {
     super(props);
     this.state = {
       rawInfo: props.rawJobInfo,
-      processedInfo: {},
+      wordFrequencies: {},
+      formattedJobs: [],
       leftoverString: "",
       completeWordAnalysis: props.completeWordAnalysis,
       processComplete: false,
@@ -20,9 +21,12 @@ class SearchInformationDisplay extends Component {
     this.processInformation();
   }
 
+  //TODO: Set up keyword searches in rawInfo, get keyword associated data.
   processInformation() {
+    console.log(this.state.rawInfo);
     this.setState({
-      processedInfo: wordAnalysis.analyzeWords(this.state.rawInfo),
+      wordFrequencies: wordAnalysis.analyzeWords(this.state.rawInfo),
+      formattedJobs: wordAnalysis.getJobs(this.state.rawInfo)
     });
     this.state.completeWordAnalysis();
     this.renderInformation();
@@ -30,7 +34,11 @@ class SearchInformationDisplay extends Component {
 
   renderInformation() {
     //TODO: Determine the form that this information should take? Pie graph? table? and make child component to work with that.
-    this.setState({processComplete: true});
+    //May require another loading screen "rendering information"
+    this.setState({
+      // keywordHightlights: wordAnalysis.processKeywords
+      processComplete: true
+    });
   }
 
   //TODO: COMPONENTIZE THIS and make them non visible? or at least visibility hidden until ready? and use display: inline and position absolute to hide? idk
@@ -38,7 +46,7 @@ class SearchInformationDisplay extends Component {
     return (
       <div>
         {this.state.processComplete &&
-          <div>{this.state.processedInfo.sortedPairings.all}</div>
+          <div>{this.state.wordFrequencies.sortedPairings.all}</div>
         }
       </div>
     );
