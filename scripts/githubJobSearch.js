@@ -3,8 +3,6 @@ const GITHUB_BASE_URL = "https://jobs.github.com/positions.json?";
 
 function getJobs(searchCriteria) {
   return new Promise(function(resolve, reject) {
-    //TODO: Add pages to URL search, make multiple requests before resolving?
-    //TODO: Wait for promises to resolve in array before returning array.
     let jobPromiseArray = [];
     let numPages;
     console.log(searchCriteria);
@@ -54,7 +52,6 @@ function getJobs(searchCriteria) {
             //Stop the loop early if ran out of results.
             i = numPages + 1;
           }
-          // console.log(response);
           resolve(response);
         })
         .catch((error) => {

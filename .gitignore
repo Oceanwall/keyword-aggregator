@@ -20,5 +20,5 @@ yarn-error.log
 # CSS Styles Craziness
 /client/src/MainSearchScreen/styles/*css
 /client/src/MainSearchScreen/styles/*css.map
-/client/src/InformationDisplay/styles/*css
-/client/src/InformationDisplay/styles/*css.map
+/client/src/MainInformationDisplay/styles/*css
+/client/src/MainInformationDisplay/styles/*css.map

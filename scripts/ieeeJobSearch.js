@@ -67,6 +67,7 @@ function getJobs(searchCriteria) {
                   });
 
                   let offerObject = {description: jobDescription, title: item.title[0], link: item.link[0]};
+                  console.log(offerObject);
                   return offerObject;
                 })
                 .catch((error) => {

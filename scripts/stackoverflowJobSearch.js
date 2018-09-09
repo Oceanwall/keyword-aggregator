@@ -69,12 +69,11 @@ function getJobs(searchCriteria) {
                 offerObject.description = offerDescription;
                 offerObject.title = item.title;
                 offerObject.link = item.link;
+                // console.log(offerObject);
                 offers[index] = offerObject;
                 index++;
               }
             }
-
-            console.log("one object completed");
             resolve(offers);
           });
         })

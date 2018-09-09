@@ -22,8 +22,6 @@ class App extends Component {
   }
 
   handleSearchFormCompletion(searchCriteria) {
-    //TODO: maybe do some things with pop up notifications and stuff?
-    //TODO: maybe add animation for wait between submission and server send and response parse?
     //TODO: yell at people trying to GET this URL
     console.log(searchCriteria);
     this.setState({

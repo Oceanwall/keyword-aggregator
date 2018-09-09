@@ -48,16 +48,16 @@ function getJobInformation(criteriaObject) {
     console.error(error);
   });
 
-  //IEEE SEARCH HAS PROBLEMS
-  // if (criteriaObject.includeIEEE) {
-  //   resultsArray[2] = ieeeSearch.ieeeJobSearch(criteriaObject).then((result) => {
-  //     console.log("DONE 2");
-  //     return result;
-  //   }).catch((error) => {
-  //     console.log("An error occurred when trying to display ieee search information");
-  //     console.error(error);
-  //   });
-  // }
+  //IEEE SEARCH HAS PROBLEMS with large loads; actively limit them>
+  if (criteriaObject.includeIEEE) {
+    resultsArray[2] = ieeeSearch.ieeeJobSearch(criteriaObject).then((result) => {
+      console.log("DONE 2");
+      return result;
+    }).catch((error) => {
+      console.log("An error occurred when trying to display ieee search information");
+      console.error(error);
+    });
+  }
 
   return resultsArray;
 }

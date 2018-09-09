@@ -5,18 +5,16 @@ Search for the keywords present in job listings. Currently parses job listings f
 This project is optimized towards the different flavors of software engineering jobs.
 
 **TODO:**
-- Refine IEEE search, troubleshoot connection problems
-- Get hardcoded info and store in JSON file for example data rendering use (without having to wait 10 seconds each time)
-- Ensure sanitization of form inputs
-- Complete data depictions (left to right transitions) (graphs, tables, additional visual depictions, consider cool designs to communicate text data?)
-- Make sure that web app is reusable after a search (reset all fields, etc, etc)
-- Mobile web app optimizations?
-- Caching, service workers?
+( ) Get hardcoded JSON data and store in JSON file for example data processing and rendering use
+( ) Revamp the word analysis algorithm, making it more comprehensive and also giving it additional capabilities.
+( ) Make the search page CSS mobile-friendly, redesign as necessary.
+( ) Ensure sanitization of form inputs
+( ) Begin work on information display dashboard.
+( ) Make sure that app is reusable after a search (reset all fields, etc, etc)
+( ) Caching, service workers?
 
 **KNOWN PROBLEMS**
-- IEEE search randomly has connection problems, refuses to load information
-- Large information loads cause empty responses (Server seems to have information properly, maybe a client side error?)
-- Loading blurb doesn't change until everything has already been processed
+- IEEE search has connection problems when requesting large #s of job searches.
 
 **EXAMPLE IMAGES**
 
@@ -27,5 +25,4 @@ This project is optimized towards the different flavors of software engineering 
 **Example Raw Data Output (Not yet cleaned up and processed)** <br> <br>
 ![Raw Data Output](https://raw.githubusercontent.com/Oceanwall/keyword-aggregator/master/demo_pictures/raw_results.png) <br> <br>
 
-## On hiatus as I prepare for the Fall CS interview season
-**Last update: 07/01**
+Was on hiatus from 07/01 to 09/08 as I prepared for the Fall CS interview season (see the [Interview Practice Repository here!](https://github.com/Oceanwall/InterviewPreparation))

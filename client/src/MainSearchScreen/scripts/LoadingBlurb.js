@@ -43,7 +43,7 @@ class LoadingBlurb extends Component {
     return (
       <div className={(this.state.processingInformation) ? "loadingInfoBlurb" : "loadingInfoBlurb hide"}>
         {this.state.loadingStatus}
-        <div class="loader"></div>
+        <div className="loader"></div>
       </div>
     );
   }
