@@ -112,7 +112,7 @@ class App extends Component {
 
     //search form completion, loading blurb (with option to cancel?)
 
-    //TODO: COMPLETE IEEE SEARCH, GET HARDCODED INFO??, MAKE SURE ALL SEARCHES WORK IN TANDEM
+    //TODO: GET HARDCODED INFO, server errors -> frontend, 
 
 
   render() {

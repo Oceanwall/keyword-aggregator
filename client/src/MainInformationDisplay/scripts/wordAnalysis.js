@@ -6,6 +6,8 @@ const striptags = require('striptags');
 //TODO: start on other functions offered
 //TODO: Add option to let user see words that weren't parsed and removed, give them option to consider?? form to submit additional missed words?
 
+//TODO: FURTHER MODULARIZE THIS STUFF GOOD GOD MAN
+
 function analyzeWords(offers) {
   //one string consisting of all offers
   let cleanOfferString = getCleanOffers(offers.result);
@@ -30,10 +32,106 @@ function analyzeWords(offers) {
 }
 
 function getJobs(offers) {
-  console.log(offers.result);
-  // 
-  // processStackOverflowJobs(offers.result[0]);
-  return [];
+
+  // For each job, we want the following information:
+  // Title
+  // Location
+  // Company
+  // Description ?? Problem with description is that it's preformatted, could be dangerous.
+  // Link
+
+  // For now, let's just capture 20 offers (from each source) and see how that plays out
+  let jobOffers = [];
+  // TODO: Show each job differently; each job should have unique appearance (to justify different information being parsed / represented)
+
+  jobOffers[0] = checkIfEmpty(processStackOverflowJobs(offers.result[0]));
+  jobOffers[1] = checkIfEmpty(processGithubJobs(offers.result[1]));
+  jobOffers[2] = checkIfEmpty(processIEEEJobs(offers.result[2]));
+
+  console.log(jobOffers);
+
+  return jobOffers;
+}
+
+function checkIfEmpty(jobs) {
+  return jobs.length == 0 ? null : jobs;
+}
+
+// TODO: Make reusable?
+function processStackOverflowJobs(jobs) {
+  console.log(jobs);
+  let jobObjects = [];
+  let i = 0;
+
+  for (let job of jobs[0]) {
+    // divider1 between job title and company, divder2 between company and location
+    let jobTitleString = job.title[0];
+    let divider1 = jobTitleString.lastIndexOf(" at ");
+    let divider2 = jobTitleString.lastIndexOf("(");
+    let divider3 = jobTitleString.lastIndexOf(")");
+
+    let jobObject = {};
+    jobObject.title = jobTitleString.substring(0, divider1);
+    jobObject.company = jobTitleString.substring(divider1 + 4, divider2 - 1);
+    jobObject.location = jobTitleString.substring(divider2 + 1, divider3);
+    // jobObject.description = job.description;
+    jobObject.link = job.link[0];
+
+    jobObjects.push(jobObject);
+    //temp code to limit jobs collected to 20, can be better optimized
+    i++;
+    if (i >= 20) {
+      break;
+    }
+  }
+
+  return jobObjects;
+}
+
+function processGithubJobs(jobs) {
+  let jobObjects = [];
+  let i = 0;
+
+  for (let job of jobs[0]) {
+    jobObjects.push({
+      title: job.title,
+      company: job.company,
+      location: job.location,
+      // description: job.description,
+      link: job.url,
+    });
+
+    // TEMP:
+    i++;
+    if (i >= 20) {
+      break;
+    }
+  }
+
+  // console.log(jobObjects);
+  return jobObjects;
+}
+
+function processIEEEJobs(jobs) {
+  let jobObjects = [];
+  let i = 0;
+
+  for (let job of jobs[0]) {
+    jobObjects.push({
+      title: job.title,
+      // description: job.description,
+      link: job.link,
+    });
+
+    // TEMP:
+    i++;
+    if (i >= 20) {
+      break;
+    }
+  }
+
+  // console.log(jobObjects);
+  return jobObjects;
 }
 
 function clean(word) {
