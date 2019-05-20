@@ -1,5 +1,23 @@
 # Keyword Aggregator
 
+```
+5/20/19: Permanently on Hiatus.
+```
+
+When I created this project, I had never developed a "full-stack" application, and honestly speaking, wasn't entirely certain what a "full-stack" application even entitled.
+
+The way that I designed this application would have doomed it to fail. Imagine making an API call to another source's rate-limited API every time a user wanted to get results about some keyword. Not only would the multiple calls made to different API sources have taken a significant chunk of user time, but it would have also placed the application at high risk of failure or incomplete results.
+
+If I were to redesign this application from the ground up, I would use a responsive framework (React and Bootstrap) to handle responsive design, create a database that automatically seeds itself from the other job API sources, and create my own API hosted on an AWS server to respond to user requests made via this application. In fact, if you want to see such a project I've developed that follows these standards, you can check out [FindADogForMe](https://github.com/Oceanwall/FindADogForMe), a full-stack application that I developed for CS 373 at the University of Texas at Austin.
+
+However, I like this concept a lot. I might resurrect a similar project, using the concepts I've learned since last year when I began work on this project, to experiment with new technologies and frameworks, and if I do, it may or may not be under this same repository.
+
+Until then, I'm just freezing this README in time so that I can come back and understand what features I wanted to implement as inspiration for future projects.
+
+```
+Old (Archived) Description
+```
+
 Search for the keywords present in job listings. Currently parses job listings from Github, Stack Overflow, and IEEE. Built with React (using less as a CSS preprocessor), and uses an Express.js server backend to make API fetch requests.
 
 This project is optimized towards the different flavors of software engineering jobs.
